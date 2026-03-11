@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profilbildgenerator - Dieter Reiter zum OB</title>
+  <title>Profilbildgenerator – Dieter Reiter zum OB</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700;800&display=swap" rel="stylesheet" />
   <style>
@@ -36,29 +36,29 @@
 </head>
 <body>
 <header>
-  <div class="spd-logo"><span class="spd-box">SPD</span><span class="spd-claim">Soziale<br>Politik fuer<br>Dich.</span></div>
+  <div class="spd-logo"><span class="spd-box">SPD</span><span class="spd-claim">Soziale<br>Politik für<br>Dich.</span></div>
   <h1>Profilbild-Generator</h1>
-  <p class="sub">Stichwahl 22. Maerz - Dieter Reiter zum OB</p>
+  <p class="sub">Stichwahl 22. März – Dieter Reiter zum OB</p>
 </header>
 <main>
   <div id="drop-zone" role="button" tabindex="0" aria-label="Foto hochladen">
     <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#E3000F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
     <p class="dz-label">Eigenes Profilbild hochladen</p>
-    <span class="dz-btn">Foto auswaehlen</span>
+    <span class="dz-btn">Foto auswählen</span>
     <input type="file" id="file-input" accept="image/*" />
   </div>
   <div id="preview-wrap">
     <canvas id="canvas" width="800" height="800"></canvas>
     <div class="btn-row">
-      <a id="download-btn" class="btn btn-red" download="profilbild-dieter-reiter.png">Bild herunterladen</a>
+      <a id="download-btn" class="btn btn-red" download="profilbild-dieter-reiter.png">⬇ Bild herunterladen</a>
       <button class="btn btn-ghost" onclick="resetGenerator()">Anderes Foto</button>
     </div>
   </div>
-  <p class="privacy">Dein Foto wird <strong>nicht</strong> an einen Server uebertragen.<br>Die gesamte Bildbearbeitung findet lokal in deinem Browser statt.</p>
+  <p class="privacy">Dein Foto wird <strong>nicht</strong> an einen Server übertragen.<br>Die gesamte Bildbearbeitung findet lokal in deinem Browser statt.</p>
 </main>
-<footer>SPD Muenchen - Stichwahl 22. Maerz 2026</footer>
+<footer>SPD München · Stichwahl 22. März 2026</footer>
 <script>
-  const CFG={size:800,stripH:148,color:'#E3000F',textColor:'#ffffff',font:'"Open Sans",Arial,sans-serif',topText:'STICHWAHL 22. MAERZ',bottomText:'ICH WAEHLE DIETER REITER ZUM OB',topSize:60,bottomSize:42};
+  const CFG={size:800,stripH:148,color:'#E3000F',textColor:'#ffffff',font:'"Open Sans",Arial,sans-serif',topText:'STICHWAHL 22. MÄRZ',bottomText:'ICH WÄHLE DIETER REITER ZUM OB',topSize:60,bottomSize:42};
   const dropZone=document.getElementById('drop-zone'),fileInput=document.getElementById('file-input'),previewWrap=document.getElementById('preview-wrap'),canvas=document.getElementById('canvas'),dlBtn=document.getElementById('download-btn'),ctx=canvas.getContext('2d');
   dropZone.addEventListener('click',()=>fileInput.click());
   dropZone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')fileInput.click();});
