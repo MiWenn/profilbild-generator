@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profilbildgenerator - Dieter Reiter zum OB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --spd-red: #E3000F; --white: #ffffff; --bg: #f2f2f2; }
+    body { font-family: 'Open Sans', Arial, sans-serif; background: var(--bg); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    header { width: 100%; background: var(--spd-red); color: var(--white); text-align: center; padding: 30px 24px 24px; }
+    header .spd-logo { display: inline-flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    header .spd-box { background: var(--white); color: var(--spd-red); font-size: 2rem; font-weight: 800; padding: 6px 14px 4px; letter-spacing: 1px; line-height: 1; }
+    header .spd-claim { font-size: 0.95rem; font-weight: 700; color: var(--white); line-height: 1.3; text-align: left; }
+    header h1 { font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.15; }
+    header p.sub { margin-top: 4px; font-size: 1rem; font-weight: 700; opacity: 0.92; }
+    main { width: 100%; max-width: 560px; padding: 32px 20px 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    #drop-zone { width: 100%; border: 3px dashed #bbb; border-radius: 4px; padding: 40px 24px; text-align: center; cursor: pointer; background: #fff; transition: border-color 0.2s, background 0.2s; }
+    #drop-zone:hover, #drop-zone.drag-over { border-color: var(--spd-red); background: #fff5f5; }
+    #drop-zone svg { margin-bottom: 12px; }
+    #drop-zone .dz-label { font-size: 1.05rem; color: #444; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
+    #drop-zone .dz-btn { display: inline-block; background: var(--spd-red); color: #fff; padding: 11px 28px; border-radius: 3px; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; }
+    #file-input { display: none; }
+    #preview-wrap { display: none; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+    canvas { width: 100%; max-width: 420px; border-radius: 4px; box-shadow: 0 6px 28px rgba(0,0,0,0.18); display: block; }
+    .btn { display: inline-block; cursor: pointer; border: none; border-radius: 3px; font-family: 'Open Sans', Arial, sans-serif; font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 13px 28px; transition: filter 0.15s; text-decoration: none; }
+    .btn:hover { filter: brightness(0.88); }
+    .btn-red { background: var(--spd-red); color: #fff; }
+    .btn-ghost { background: transparent; border: 2px solid #aaa; color: #555; }
+    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .privacy { font-size: 0.82rem; color: #777; text-align: center; max-width: 400px; line-height: 1.55; }
+    footer { margin-top: auto; padding: 18px; font-size: 0.78rem; color: #aaa; text-align: center; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="spd-logo"><span class="spd-box">SPD</span><span class="spd-claim">Soziale<br>Politik fuer<br>Dich.</span></div>
+  <h1>Profilbild-Generator</h1>
+  <p class="sub">Stichwahl 22. Maerz - Dieter Reiter zum OB</p>
+</header>
+<main>
+  <div id="drop-zone" role="button" tabindex="0" aria-label="Foto hochladen">
+    <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#E3000F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    <p class="dz-label">Eigenes Profilbild hochladen</p>
+    <span class="dz-btn">Foto auswaehlen</span>
+    <input type="file" id="file-input" accept="image/*" />
+  </div>
+  <div id="preview-wrap">
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <div class="btn-row">
+      <a id="download-btn" class="btn btn-red" download="profilbild-dieter-reiter.png">Bild herunterladen</a>
+      <button class="btn btn-ghost" onclick="resetGenerator()">Anderes Foto</button>
+    </div>
+  </div>
+  <p class="privacy">Dein Foto wird <strong>nicht</strong> an einen Server uebertragen.<br>Die gesamte Bildbearbeitung findet lokal in deinem Browser statt.</p>
+</main>
+<footer>SPD Muenchen - Stichwahl 22. Maerz 2026</footer>
+<script>
+  const CFG={size:800,stripH:148,color:'#E3000F',textColor:'#ffffff',font:'"Open Sans",Arial,sans-serif',topText:'STICHWAHL 22. MAERZ',bottomText:'ICH WAEHLE DIETER REITER ZUM OB',topSize:60,bottomSize:42};
+  const dropZone=document.getElementById('drop-zone'),fileInput=document.getElementById('file-input'),previewWrap=document.getElementById('preview-wrap'),canvas=document.getElementById('canvas'),dlBtn=document.getElementById('download-btn'),ctx=canvas.getContext('2d');
+  dropZone.addEventListener('click',()=>fileInput.click());
+  dropZone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')fileInput.click();});
+  dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-over');});
+  dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))processFile(f);});
+  fileInput.addEventListener('change',()=>{if(fileInput.files[0])processFile(fileInput.files[0]);});
+  function processFile(file){const r=new FileReader();r.onload=evt=>{const img=new Image();img.onload=()=>{drawFrame(img);dlBtn.href=canvas.toDataURL('image/png');dropZone.style.display='none';previewWrap.style.display='flex';};img.src=evt.target.result;};r.readAsDataURL(file);}
+  function resetGenerator(){dropZone.style.display='';previewWrap.style.display='none';fileInput.value='';}
+  function drawFrame(img){const S=CFG.size,H=CFG.stripH,photoH=S-H*2;canvas.width=S;canvas.height=S;const sR=img.width/img.height,dR=S/photoH;let sx,sy,sw,sh;if(sR>dR){sh=img.height;sw=img.height*dR;sx=(img.width-sw)/2;sy=0;}else{sw=img.width;sh=img.width/dR;sx=0;sy=(img.height-sh)/2;}ctx.drawImage(img,sx,sy,sw,sh,0,H,S,photoH);ctx.fillStyle=CFG.color;ctx.fillRect(0,0,S,H);ctx.fillRect(0,S-H,S,H);ctx.fillStyle='rgba(0,0,0,0.12)';ctx.fillRect(0,H-2,S,2);ctx.fillRect(0,S-H,S,2);drawText(CFG.topText,S/2,H/2,CFG.topSize);drawText(CFG.bottomText,S/2,S-H/2,CFG.bottomSize);}
+  function drawText(text,cx,cy,size){const S=CFG.size;let fs=size;ctx.save();ctx.font='800 '+fs+'px '+CFG.font;while(ctx.measureText(text).width>S-80&&fs>16){fs--;ctx.font='800 '+fs+'px '+CFG.font;}ctx.fillStyle=CFG.textColor;ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='rgba(0,0,0,0.2)';ctx.shadowBlur=8;ctx.shadowOffsetY=2;ctx.fillText(text,cx,cy);ctx.restore();}
+</script>
+</body>
+</html>
