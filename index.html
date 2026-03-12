@@ -586,25 +586,21 @@ document.addEventListener('keydown', e => {
       e.preventDefault();
       photoOffsetY -= step;
       drawFrame(currentImage);
-      dlBtn.href = canvas.toDataURL('image/png');
       break;
     case 'ArrowDown':
       e.preventDefault();
       photoOffsetY += step;
       drawFrame(currentImage);
-      dlBtn.href = canvas.toDataURL('image/png');
       break;
     case 'ArrowLeft':
       e.preventDefault();
       photoOffsetX -= step;
       drawFrame(currentImage);
-      dlBtn.href = canvas.toDataURL('image/png');
       break;
     case 'ArrowRight':
       e.preventDefault();
       photoOffsetX += step;
       drawFrame(currentImage);
-      dlBtn.href = canvas.toDataURL('image/png');
       break;
   }
 });
@@ -622,7 +618,6 @@ function processFile(file) {
       zoomSlider.value = 100;
       zoomValue.textContent = '100%';
       drawFrame(img);
-      dlBtn.href = canvas.toDataURL('image/png');
       dropZone.style.display  = 'none';
       previewWrap.style.display = 'flex';
       // scroll into view on mobile
