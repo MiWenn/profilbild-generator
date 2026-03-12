@@ -406,8 +406,7 @@
     <div class="share-grid">
 
       <!-- ① Download -->
-      <a id="download-btn" class="share-btn btn-download"
-         download="profilbild-dieter-reiter.png" href="#">
+      <button class="share-btn btn-download" onclick="shareToDownload()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -415,7 +414,7 @@
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
         Herunterladen
-      </a>
+      </button>
 
       <!-- ② WhatsApp -->
       <button class="share-btn btn-whatsapp" onclick="shareToWhatsApp()">
@@ -825,6 +824,20 @@ async function tryNativeShare() {
 }
 
 /* ── PLATFORM ACTIONS ────────────────────────────── */
+async function shareToDownload() {
+  if (await tryNativeShare()) return;
+  // Fallback: direct download
+  const blob = await canvasToBlob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'profilbild-dieter-reiter.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 async function shareToWhatsApp() {
   if (await tryNativeShare()) return;
   const msg = CFG.shareText + '\n\n' + CFG.pageUrl;
